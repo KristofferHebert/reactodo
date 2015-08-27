@@ -1,0 +1,26 @@
+{
+  "name": "reacttodo",
+  "version": "1.0.0",
+  "description": "Todo App built in react",
+  "main": "index.js",
+  "scripts": {
+    "test": "dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KristofferHebert/reacttodo.git"
+  },
+  "keywords": [
+    "react",
+    "todo"
+  ],
+  "author": "Kristoffer Hebert",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KristofferHebert/reacttodo/issues"
+  },
+  "homepage": "https://github.com/KristofferHebert/reacttodo#readme",
+  "dependencies": {
+    "react": "^0.13.3"
+  }
+}
