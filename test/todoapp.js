@@ -3,4 +3,4 @@
 import ReactUtils from 'react/addons'
 const TestUtils = ReactUtils.addons.TestUtils
 
-import TodoApp from '../src/todoapp'
+console.log('hey',TestUtils)
