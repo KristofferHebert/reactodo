@@ -4,7 +4,7 @@
   "description": "Todo App built in react",
   "main": "index.js",
   "scripts": {
-    "test": "dev"
+    "dev": " babel main.jsx -o main.js -w"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,5 @@
   },
   "homepage": "https://github.com/KristofferHebert/reacttodo#readme",
   "dependencies": {
-    "react": "^0.13.3"
   }
 }
