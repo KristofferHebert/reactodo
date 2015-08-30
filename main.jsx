@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 let TodoApp = React.createClass({
   // set inital values for todos list
@@ -15,13 +15,39 @@ let TodoApp = React.createClass({
 })
 
 let TodosList = React.createClass({
+    getInitialState(){
+        return this.state = {
+           todos: this.props.todos
+        }
+    },
    render(){
      // render todos array into Todo components
-     let todos = this.props.todos.map(function compileTodo(v,i){
+     let todos = this.state.todos.map(function compileTodo(v,i){
        return <Todo key={i} index={i} label={v} />
      })
-     return <ul>{todos}</ul>
+     return (
+            <section>
+                <ul>{todos}</ul>
+                <AddTodo />
+            </section>
+        )
    }
+})
+
+let AddTodo = React.createClass({
+    getInitialState(){
+            return this.state = {
+                value: "add new todo"
+            }
+    },
+    render(){
+        return (
+            <form>
+                <input type="text" defaultValue={this.state.value} />
+                <input type="submit" value="submit" />
+            </form>
+        )
+    }
 })
 
 let Todo = React.createClass({

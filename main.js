@@ -19,15 +19,43 @@ var TodoApp = React.createClass({
 var TodosList = React.createClass({
     displayName: 'TodosList',
 
+    getInitialState: function getInitialState() {
+        return this.state = {
+            todos: this.props.todos
+        };
+    },
     render: function render() {
         // render todos array into Todo components
-        var todos = this.props.todos.map(function compileTodo(v, i) {
+        var todos = this.state.todos.map(function compileTodo(v, i) {
             return React.createElement(Todo, { key: i, index: i, label: v });
         });
         return React.createElement(
-            'ul',
+            'section',
             null,
-            todos
+            React.createElement(
+                'ul',
+                null,
+                todos
+            ),
+            React.createElement(AddTodo, null)
+        );
+    }
+});
+
+var AddTodo = React.createClass({
+    displayName: 'AddTodo',
+
+    getInitialState: function getInitialState() {
+        return this.state = {
+            value: "add new todo"
+        };
+    },
+    render: function render() {
+        return React.createElement(
+            'form',
+            null,
+            React.createElement('input', { type: 'text', defaultValue: this.state.value }),
+            React.createElement('input', { type: 'submit', value: 'submit' })
         );
     }
 });
