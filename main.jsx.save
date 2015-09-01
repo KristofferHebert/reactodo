@@ -1,5 +1,8 @@
 'use strict';
 
+http://jsfiddle.net/johnthethird/NXCyC/7/
+
+
 let TodoApp = React.createClass({
   // set inital values for todos list
   getInitialState(){
@@ -39,10 +42,6 @@ let AddTodo = React.createClass({
             return this.state = {
                 value: "add new todo"
             }
-    },
-    addTodo(todo){
-        let newList = this.state.todos.concat(todo)
-        this.setState({todos: newList})
     },
     render(){
         return (

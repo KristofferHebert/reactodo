@@ -50,6 +50,10 @@ var AddTodo = React.createClass({
             value: "add new todo"
         };
     },
+    addTodo: function addTodo(todo) {
+        var newList = this.state.todos.concat(todo);
+        this.setState({ todos: newList });
+    },
     render: function render() {
         return React.createElement(
             'form',
