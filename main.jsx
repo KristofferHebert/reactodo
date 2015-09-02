@@ -1,109 +1,113 @@
 'use strict';
 
+// create wrapper component for TodoApp
 let TodoApp = React.createClass({
-  // set inital values for todos list
-  getInitialState(){
-      return this.state = {
-         todos: ['todo 1', 'todo 2', 'todo 3', 'todo 4']
-      }
-  },
-  render(){
-    //pass todos data from TodoApp state to TodosList props
-    return <TodosList todos={this.state.todos} />
-  }
-
-})
-
-let TodosList = React.createClass({
-    getInitialState(){
+    // set inital values for todos list
+    getInitialState() {
         return this.state = {
-           todos: this.props.todos
+            todos: [
+                'todo 1', 'todo 2', 'todo 3', 'todo 4'
+            ]
         }
     },
-   render(){
-     // render todos array into Todo components
-     let todos = this.state.todos.map(function compileTodo(v,i){
-       return <Todo key={i} index={i} label={v} />
-     })
-     return (
-            <section>
-                <ul>{todos}</ul>
-                <AddTodo />
-            </section>
-        )
-   }
+    render() {
+        //pass todos data from TodoApp state to TodosList props
+        return (<TodosList todos={this.state.todos}/>)
+    }
+
 })
 
-let AddTodo = React.createClass({
-    getInitialState(){
-            return this.state = {
-                value: "add new todo"
-            }
+// create list component for Todos
+let TodosList = React.createClass({
+
+    // move todos from props to state
+    getInitialState() {
+        return this.state = {
+            todos: this.props.todos
+        }
     },
-    addTodo(todo){
+    addTodo(todo) {
         let newList = this.state.todos.concat(todo)
-        this.setState({todos: newList})
+        this.setState({
+            todos: newList
+        })
     },
-    render(){
+    removeTodo(index) {
+        let newList = this.state.todos
+        newList.splice(index, 1)
+        this.setState({
+            todos: newList
+        })
+    },
+    render() {
+
+        // render todos array into Todo components
+        let self = this
+        let todos = this.state.todos.map(function compileTodo(v, i) {
+            return <Todo index={i} key={i} label={v} removeTodo={self.removeTodo}/>
+        })
         return (
-            <form>
-                <input type="text" defaultValue={this.state.value} />
-                <input type="submit" value="submit" />
+            <section>
+                <h3>Todos</h3>
+                <ul className="todos">{todos}</ul>
+                <AddTodo addTodo={this.addTodo} />
+            </section>
+        )
+    }
+})
+
+// create component form for adding todos
+let AddTodo = React.createClass({
+
+    // set initial textvalue of input field
+    getInitialState() {
+        return this.state = {
+            value: "add Todo",
+        }
+    },
+    handleSubmit(event) {
+        event.preventDefault()
+
+        // prevent empty todos or default value
+        if(this.state.newValue === "" || this.state.value === "add Todo") return
+
+        // push new todo to todos
+        this.props.addTodo(this.state.newValue)
+
+        // reset input field values
+        this.setState({
+            value: "",
+            newValue: ""
+        })
+    },
+    handleChange(event) {
+        this.setState({
+            value: event.target.value,
+            newValue: event.target.value
+        })
+    },
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <input value={this.state.value} onChange={this.handleChange} type="text"/>
+                <input type="submit" value="submit"/>
             </form>
         )
     }
 })
 
+// create todo for todos list
 let Todo = React.createClass({
-    render(){
-      // render todo with label and index
-      return <li index={this.props.i}>{this.props.label}</li>
+    handleClick(){
+        console.log()
+        this.props.removeTodo(this.props.index)
+    },
+    render() {
+
+        // render todo with label and index
+        return <li className="todos-todo" onClick={this.handleClick}>{this.props.label}</li>
     }
 })
 
 // Render entire TodoApp and append HTML to App#div
-React.render(<TodoApp />, document.getElementById('App'))
-
-/*
-
-About React
-React is a Javascript library for creating UI elements. It was developed by Facebook and it powers facebook.com and instagram.com.
-It greatly simplifies complex UIs via self contained components that are easy to test and reuse. React is also lightning fast,
-due to use of Shadow DOM. React renders the DOM virtually via Shadow DOM, and compares the difference. React only makes the minimum
-amount of changes to DOM. Other libraries are slower, because they rerender the entire DOM when state changes.
-
-Thinking in React
-In React every piece of your application should be broken into small modules aka components. Components are
-created using React.createClass({...}) and should only be responsible for one thing. Components contain data, methods and HTML. Optional in React
-is JSX, which simplifies templates in react. I use it with babel and compile after every change.
-
-Data flows unidirectionally from Parent to child components via component attributes and "this.props". State within a component is
-can be manipulated via "this.state" and "setState({...})" within React.createClass({...})
-
-
-
-Using React
-
-
-
-main.jsx
-let Message = React.creatClass({
-    getInitialState(){
-        return this.state = {
-            message : "Hello World"
-        }
-    },
-    render(){
-        return <h1>{this.state.message}</h1>
-    }
-})
-
-Todo Example App:
-React.render(<Message />, document.getElementById('Message'))
-
-
-More Resources
-https://facebook.github.io/react/docs/why-react.html
-
-
- */
+React.render(<TodoApp/>, document.getElementById('App'))

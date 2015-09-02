@@ -1,5 +1,6 @@
 'use strict';
 
+// create wrapper component for TodoApp
 var TodoApp = React.createClass({
     displayName: 'TodoApp',
 
@@ -16,62 +17,109 @@ var TodoApp = React.createClass({
 
 });
 
+// create list component for Todos
 var TodosList = React.createClass({
     displayName: 'TodosList',
 
+    // move todos from props to state
     getInitialState: function getInitialState() {
         return this.state = {
             todos: this.props.todos
         };
     },
+    addTodo: function addTodo(todo) {
+        var newList = this.state.todos.concat(todo);
+        this.setState({
+            todos: newList
+        });
+    },
+    removeTodo: function removeTodo(index) {
+        var newList = this.state.todos;
+        newList.splice(index, 1);
+        this.setState({
+            todos: newList
+        });
+    },
     render: function render() {
+
         // render todos array into Todo components
+        var self = this;
         var todos = this.state.todos.map(function compileTodo(v, i) {
-            return React.createElement(Todo, { key: i, index: i, label: v });
+            return React.createElement(Todo, { index: i, key: i, label: v, removeTodo: self.removeTodo });
         });
         return React.createElement(
             'section',
             null,
             React.createElement(
-                'ul',
+                'h3',
                 null,
+                'Todos'
+            ),
+            React.createElement(
+                'ul',
+                { className: 'todos' },
                 todos
             ),
-            React.createElement(AddTodo, null)
+            React.createElement(AddTodo, { addTodo: this.addTodo })
         );
     }
 });
 
+// create component form for adding todos
 var AddTodo = React.createClass({
     displayName: 'AddTodo',
 
+    // set initial textvalue of input field
     getInitialState: function getInitialState() {
         return this.state = {
-            value: "add new todo"
+            value: "add Todo"
         };
     },
-    addTodo: function addTodo(todo) {
-        var newList = this.state.todos.concat(todo);
-        this.setState({ todos: newList });
+    handleSubmit: function handleSubmit(event) {
+        event.preventDefault();
+
+        // prevent empty todos or default value
+        if (this.state.newValue === "" || this.state.value === "add Todo") return;
+
+        // push new todo to todos
+        this.props.addTodo(this.state.newValue);
+
+        // reset input field values
+        this.setState({
+            value: "",
+            newValue: ""
+        });
+    },
+    handleChange: function handleChange(event) {
+        this.setState({
+            value: event.target.value,
+            newValue: event.target.value
+        });
     },
     render: function render() {
         return React.createElement(
             'form',
-            null,
-            React.createElement('input', { type: 'text', defaultValue: this.state.value }),
+            { onSubmit: this.handleSubmit },
+            React.createElement('input', { value: this.state.value, onChange: this.handleChange, type: 'text' }),
             React.createElement('input', { type: 'submit', value: 'submit' })
         );
     }
 });
 
+// create todo for todos list
 var Todo = React.createClass({
     displayName: 'Todo',
 
+    handleClick: function handleClick() {
+        console.log();
+        this.props.removeTodo(this.props.index);
+    },
     render: function render() {
+
         // render todo with label and index
         return React.createElement(
             'li',
-            { index: this.props.i },
+            { className: 'todos-todo', onClick: this.handleClick },
             this.props.label
         );
     }
@@ -79,47 +127,3 @@ var Todo = React.createClass({
 
 // Render entire TodoApp and append HTML to App#div
 React.render(React.createElement(TodoApp, null), document.getElementById('App'));
-
-/*
-
-About React
-React is a Javascript library for creating UI elements. It was developed by Facebook and it powers facebook.com and instagram.com.
-It greatly simplifies complex UIs via self contained components that are easy to test and reuse. React is also lightning fast,
-due to use of Shadow DOM. React renders the DOM virtually via Shadow DOM, and compares the difference. React only makes the minimum
-amount of changes to DOM. Other libraries are slower, because they rerender the entire DOM when state changes.
-
-Thinking in React
-In React every piece of your application should be broken into small modules aka components. Components are
-created using React.createClass({...}) and should only be responsible for one thing. Components contain data, methods and HTML. Optional in React
-is JSX, which simplifies templates in react. I use it with babel and compile after every change.
-
-Data flows unidirectionally from Parent to child components via component attributes and "this.props". State within a component is
-can be manipulated via "this.state" and "setState({...})" within React.createClass({...})
-
-
-
-Using React
-
-
-
-main.jsx
-let Message = React.creatClass({
-    getInitialState(){
-        return this.state = {
-            message : "Hello World"
-        }
-    },
-    render(){
-        return <h1>{this.state.message}</h1>
-    }
-})
-
-Todo Example App:
-React.render(<Message />, document.getElementById('Message'))
-
-
-More Resources
-https://facebook.github.io/react/docs/why-react.html
-
-
- */
