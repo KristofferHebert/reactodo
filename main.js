@@ -12,7 +12,16 @@ var TodoApp = React.createClass({
     },
     render: function render() {
         //pass todos data from TodoApp state to TodosList props
-        return React.createElement(TodosList, { todos: this.state.todos });
+        return React.createElement(
+            'section',
+            null,
+            React.createElement(
+                'h3',
+                null,
+                'Todos'
+            ),
+            React.createElement(TodosList, { todos: this.state.todos })
+        );
     }
 
 });
@@ -51,11 +60,6 @@ var TodosList = React.createClass({
             'section',
             null,
             React.createElement(
-                'h3',
-                null,
-                'Todos'
-            ),
-            React.createElement(
                 'ul',
                 { className: 'todos' },
                 todos
@@ -72,7 +76,7 @@ var AddTodo = React.createClass({
     // set initial textvalue of input field
     getInitialState: function getInitialState() {
         return this.state = {
-            value: "add Todo"
+            newValue: ""
         };
     },
     handleSubmit: function handleSubmit(event) {
@@ -86,7 +90,6 @@ var AddTodo = React.createClass({
 
         // reset input field values
         this.setState({
-            value: "",
             newValue: ""
         });
     },
@@ -100,7 +103,7 @@ var AddTodo = React.createClass({
         return React.createElement(
             'form',
             { onSubmit: this.handleSubmit },
-            React.createElement('input', { value: this.state.value, onChange: this.handleChange, type: 'text' }),
+            React.createElement('input', { placeholder: 'add Todo', value: this.state.newValue, onChange: this.handleChange, type: 'text' }),
             React.createElement('input', { type: 'submit', value: 'submit' })
         );
     }

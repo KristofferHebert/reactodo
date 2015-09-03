@@ -12,7 +12,12 @@ let TodoApp = React.createClass({
     },
     render() {
         //pass todos data from TodoApp state to TodosList props
-        return (<TodosList todos={this.state.todos}/>)
+        return (
+            <section>
+                <h3>Todos</h3>
+                <TodosList todos={this.state.todos}/>
+            </section>
+        )
     }
 
 })
@@ -48,7 +53,6 @@ let TodosList = React.createClass({
         })
         return (
             <section>
-                <h3>Todos</h3>
                 <ul className="todos">{todos}</ul>
                 <AddTodo addTodo={this.addTodo} />
             </section>
@@ -62,7 +66,7 @@ let AddTodo = React.createClass({
     // set initial textvalue of input field
     getInitialState() {
         return this.state = {
-            value: "add Todo",
+            newValue: "",
         }
     },
     handleSubmit(event) {
@@ -76,7 +80,6 @@ let AddTodo = React.createClass({
 
         // reset input field values
         this.setState({
-            value: "",
             newValue: ""
         })
     },
@@ -89,7 +92,7 @@ let AddTodo = React.createClass({
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <input value={this.state.value} onChange={this.handleChange} type="text"/>
+                <input placeholder="add Todo" value={this.state.newValue} onChange={this.handleChange} type="text"/>
                 <input type="submit" value="submit"/>
             </form>
         )
