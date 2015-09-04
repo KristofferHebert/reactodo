@@ -6,7 +6,7 @@ let TodoApp = React.createClass({
     getInitialState() {
         return this.state = {
             todos: [
-                'todo 1', 'todo 2', 'todo 3', 'todo 4'
+                'todo 1', 'todo 2', 'todo 3', 'todo 4', 'todo 5'
             ]
         }
     },
