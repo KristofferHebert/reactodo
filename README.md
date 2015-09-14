@@ -1,2 +1,2 @@
 # reacttodo
-Sample todo app built in react.js
+Sample todo app built in react.js.
